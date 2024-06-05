@@ -1,6 +1,4 @@
 ---
-- name: Print hello from role
-  debug:
-    msg: "Hello from role!"
-- name: Include aliases tasks
-  import_tasks: aliases.yml
+# tasks/main.yml
+- name: Include aliases tasks  
+  ansible.builtin.include_tasks: aliases.yml
