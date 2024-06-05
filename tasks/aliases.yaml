@@ -1,0 +1,34 @@
+- name: Hozz létre egy skriptet a kubectl konfigurációhoz globálisan
+  copy:
+    dest: "/etc/profile.d/kubectl_env.sh"
+    content: |
+      export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+      alias k='/var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml'
+      alias kubectl='/var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml'
+    mode: '0755'
+
+- name: Ensure /etc/profile.d/kubectl_env.sh is sourced in /etc/profile
+  lineinfile:
+    path: /etc/profile
+    line: 'source /etc/profile.d/kubectl_env.sh'
+    state: present
+    create: no
+  register: profile_updated
+
+- name: Inform user about the /etc/profile update
+  debug:
+    msg: "/etc/profile has been updated to source kubectl_env.sh."
+  when: profile_updated.changed
+
+- name: Ensure kubectl_env.sh is sourced in root's .bashrc
+  lineinfile:
+    path: "/root/.bashrc"
+    line: "source /etc/profile.d/kubectl_env.sh"
+    state: present
+    create: no
+  register: bashrc_updated
+
+- name: Inform user about the .bashrc update
+  debug:
+    msg: "root's .bashrc has been updated to source kubectl_env.sh."
+  when: bashrc_updated.changed  

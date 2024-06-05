@@ -1,0 +1,50 @@
+- name: hhhhh
+  debug:
+     msg: aaaaaaaaaaaaaaaa    
+
+- name: install pip3
+  apt: name=python3-pip state=present      
+
+- name: install pre-requisites
+  pip:
+    name:          
+      - pyyaml
+      - kubernetes
+
+- name: "Add the Rancher Helm repository"
+  kubernetes.core.helm_repository:
+    name: rancher-latest
+    repo_url: https://releases.rancher.com/server-charts/latest
+    state: present
+
+- name: Create the cattle-system namespace
+  kubernetes.core.k8s:
+    kubeconfig: /etc/rancher/rke2/rke2.yaml
+    name: cattle-system
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Install Rancher from the Helm chart
+  kubernetes.core.helm:
+    name: rancher
+    kubeconfig: /etc/rancher/rke2/rke2.yaml
+    chart_ref: "rancher-latest/rancher"
+    release_namespace: cattle-system
+    create_namespace: true
+    values:
+      hostname: "{{ ansible_host }}"
+      replicas: 3
+    state: present
+  ignore_errors: yes  
+
+- name: Wait for Rancher deployment to complete
+  community.kubernetes.k8s_info:
+    api_version: apps/v1
+    kind: Deployment
+    namespace: cattle-system
+    name: rancher
+  register: rancher_deployment
+  until: rancher_deployment.resources[0].status.readyReplicas | default(0) == 3
+  retries: 60
+  delay: 10
