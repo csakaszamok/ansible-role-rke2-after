@@ -1,3 +1,6 @@
 ---
+- name: Print hello from role
+      debug:
+        msg: "Hello from role!"
 - name: Include aliases tasks
   import_tasks: aliases.yml
