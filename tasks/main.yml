@@ -2,4 +2,5 @@
 # tasks/main.yml
 
 - name: Include aliases tasks  
-  ansible.builtin.include_tasks: aliases.yml
+  import_tasks: aliases.yml
+  # ansible.builtin.include_tasks: aliases.yml
