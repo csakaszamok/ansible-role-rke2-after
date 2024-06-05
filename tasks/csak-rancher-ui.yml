@@ -80,6 +80,6 @@
   retries: 60
   delay: 10
 
-- name: Debug final Rancher deployment status
-  debug:
-    msg: "{{ rancher_deployment_status_final.stdout | from_json }}"
+# - name: Debug final Rancher deployment status
+#   debug:
+#     msg: "{{ rancher_deployment_status_final.stdout | from_json }}"
