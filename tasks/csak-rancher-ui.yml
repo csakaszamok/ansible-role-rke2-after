@@ -1,12 +1,20 @@
-- name: install pip3
-  apt: name=python3-pip state=present      
+# - name: install pip3
+#   apt: name=python3-pip state=present      
 
-- name: install pre-requisites
-  become: yes
-  pip:
-    name:          
-      - pyyaml
-      - kubernetes
+# - name: install pre-requisites
+#   become: yes
+#   pip:
+#     name:          
+#       - pyyaml
+#       - kubernetes
+
+- name: Install Python packages via apt
+  apt:
+    name:
+      - python3-yaml
+      - python3-kubernetes
+    state: present
+    update_cache: yes      
 
 - name: Create symlink for python pointing to python3
   file:
