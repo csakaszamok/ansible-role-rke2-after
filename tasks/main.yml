@@ -8,6 +8,8 @@
 
 - name: Install cert-manager
   ansible.builtin.include_tasks: cert-manager.yml
+  when: rke2_type == 'server'
 
 - name: Install rancher-ui
   ansible.builtin.include_tasks: csak-rancher-ui.yml
+  when: rke2_type == 'server'
