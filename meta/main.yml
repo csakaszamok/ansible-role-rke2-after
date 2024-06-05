@@ -1,4 +1,5 @@
 galaxy_info:
+  version: "0.1"
   author: csakaszamok
   description: rke2 after scripts
   company: 
