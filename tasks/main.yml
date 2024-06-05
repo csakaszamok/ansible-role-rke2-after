@@ -1,2 +1,5 @@
 ---
-# tasks file for ansible-role-rke2-after
+# tasks/main.yml
+
+- name: Include aliases tasks
+  import_tasks: aliases.yml
