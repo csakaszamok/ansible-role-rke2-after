@@ -36,6 +36,25 @@
     kind: Namespace
     state: present
 
+# - name: Install Rancher from the Helm chart
+#   kubernetes.core.helm:
+#     name: rancher
+#     kubeconfig: /etc/rancher/rke2/rke2.yaml
+#     chart_ref: "rancher-latest/rancher"
+#     release_namespace: cattle-system
+#     create_namespace: true
+#     values:
+#       hostname: "{{ ansible_host }}"
+#       replicas: 3
+#     state: present
+#   ignore_errors: yes  
+
+- name: Check if Rancher release exists
+  command: helm list -n cattle-system -q | grep '^rancher$'
+  register: rancher_release_check
+  failed_when: false
+  changed_when: false
+
 - name: Install Rancher from the Helm chart
   kubernetes.core.helm:
     name: rancher
@@ -47,7 +66,25 @@
       hostname: "{{ ansible_host }}"
       replicas: 3
     state: present
-  ignore_errors: yes  
+  when: rancher_release_check.stdout == ''
+  ignore_errors: yes
+
+- name: Upgrade Rancher release if it exists
+  kubernetes.core.helm:
+    name: rancher
+    kubeconfig: /etc/rancher/rke2/rke2.yaml
+    chart_ref: "rancher-latest/rancher"
+    release_namespace: cattle-system
+    values:
+      hostname: "{{ ansible_host }}"
+      replicas: 3
+    state: present
+  when: rancher_release_check.stdout != ''
+  ignore_errors: yes
+
+
+
+
 
 # - name: Wait for Rancher deployment to complete
 #   community.kubernetes.k8s_info:
