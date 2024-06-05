@@ -8,6 +8,12 @@
 #       - pyyaml
 #       - kubernetes
 
+- name: Create symlink for python pointing to python3
+  file:
+    src: /usr/bin/python3
+    dest: /usr/bin/python
+    state: link
+
 - name: "Add the Rancher Helm repository"
   kubernetes.core.helm_repository:
     name: rancher-latest
