@@ -3,8 +3,10 @@
     dest: "/etc/profile.d/kubectl_env.sh"
     content: |
       export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+      export CRI_CONFIG_FILE=/var/lib/rancher/rke2/agent/etc/crictl.yaml
       alias k='/var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml'
       alias kubectl='/var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml'
+      alias docker='/var/lib/rancher/rke2/bin/crictl'
     mode: '0755'
 
 - name: Ensure /etc/profile.d/kubectl_env.sh is sourced in /etc/profile

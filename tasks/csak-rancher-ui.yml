@@ -63,7 +63,7 @@
 - name: Retrieve Rancher deployment status using kubectl
   command: /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get deployment rancher -n cattle-system -o json
   register: rancher_deployment_status
-  retries: 1
+  retries: 60
   delay: 10
   until: rancher_deployment_status.stdout is not none and rancher_deployment_status.stdout != '' and
          (rancher_deployment_status.stdout | from_json | json_query('status.readyReplicas') | default(0)) == 3
@@ -77,7 +77,7 @@
   command: /var/lib/rancher/rke2/bin/kubectl --kubeconfig /etc/rancher/rke2/rke2.yaml get deployment rancher -n cattle-system -o json
   register: rancher_deployment_status_final
   until: rancher_deployment_status_final.stdout | from_json | json_query('status.readyReplicas') | default(0) == 3
-  retries: 1
+  retries: 60
   delay: 10
 
 - name: Debug final Rancher deployment status
