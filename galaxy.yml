@@ -1,0 +1,21 @@
+---
+namespace: csakaszamok
+name: rke2-after
+version: 0.2.0
+readme: README.md
+description: rke2 after scripts
+authors:
+  - csakaszamok  
+license:
+  - AGPL-3.0
+# tags:
+#   - deployment
+#   - deployer
+#   - release
+#   - package
+#   - catapult
+repository: "https://github.com/csakaszamok/ansible-role-rke2-after"
+homepage: "https://github.com/csakaszamok/ansible-role-rke2-after"
+issues: "https://github.com/csakaszamok/ansible-role-rke2-after/issues"
+
+
