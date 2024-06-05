@@ -2,3 +2,9 @@
 # tasks/main.yml
 - name: Include aliases tasks  
   ansible.builtin.include_tasks: aliases.yml
+
+- name: Install heml
+  ansible.builtin.include_tasks: helm-manager.yml
+
+- name: Install rancher-ui
+  ansible.builtin.include_tasks: csak-rancher-ui.yml
