@@ -1,7 +1,8 @@
 galaxy_info:  
   author: csakaszamok
   description: rke2 after scripts
-  company: 
+  namespace: csakaszamok
+  company: csakaszamok
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
