@@ -65,10 +65,21 @@
   register: rancher_deployment_status
   retries: 60
   delay: 10
-  until: rancher_deployment_status.stdout | from_json | json_query('status.readyReplicas') | default(0) == 3
+  until: rancher_deployment_status.stdout is not none and rancher_deployment_status.stdout != '' and
+         (rancher_deployment_status.stdout | from_json | json_query('status.readyReplicas') | default(0)) == 3
 
-- name: Debug Rancher deployment status
+- name: Debug Rancher deployment status if kubectl command fails
   debug:
-    msg: "{{ rancher_deployment_status.stdout | from_json }}"
+    var: rancher_deployment_status
+  failed_when: rancher_deployment_status.stdout is none or rancher_deployment_status.stdout == ''
 
+- name: Ensure Rancher deployment is ready
+  command: kubectl get deployment rancher -n cattle-system -o json
+  register: rancher_deployment_status_final
+  until: rancher_deployment_status_final.stdout | from_json | json_query('status.readyReplicas') | default(0) == 3
+  retries: 60
+  delay: 10
 
+- name: Debug final Rancher deployment status
+  debug:
+    msg: "{{ rancher_deployment_status_final.stdout | from_json }}"
