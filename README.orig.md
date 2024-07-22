@@ -36,3 +36,17 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+```bash
+/usr/local/bin/rke2-killall.sh
+/usr/local/bin/rke2-uninstall.sh
+```
+
+- src: https://github.com/csakaszamok/ansible-role-rke2-after
+  name: csakaszamok.rke2-after
+  # version: 0.3.6
+
+
+- name: csakaszamok.rke2-after
+  version: 0.3.6    
